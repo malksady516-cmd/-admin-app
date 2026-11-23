@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -172,9 +172,14 @@
         .settings-section h3 { margin-bottom: 15px; font-size: 16px; color: var(--gold); font-family: 'Cairo', sans-serif; }
         input[type="color"] { width: 100%; height: 50px; border: none; cursor: pointer; border-radius: 10px; background: transparent; }
         .notif-input { width: 100%; padding: 15px; border-radius: 10px; border: 1px solid #333; background: #0a0a0a; color: white; margin-bottom: 15px; font-family: inherit; }
+
+        /* قائمة الخيارات المنبثقة */
+        .options-list { display: flex; flex-direction: column; gap: 10px; }
+        .options-list button { padding: 12px; border-radius: 10px; border: 1px solid var(--cyan); background: transparent; color: white; cursor: pointer; font-weight: bold; text-align: right; transition: 0.3s; display: flex; align-items: center; gap: 10px; }
+        .options-list button:hover { background: var(--cyan); color: #000; }
     </style>
     <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#ff2a2a">
+    <meta name="theme-color" content="#ff2a2a">
 </head>
 <body>
 
@@ -183,7 +188,7 @@
         <i class="fas fa-shield-alt glow-icon"></i>
         <h1 class="splash-title">أهلاً وسهلاً بك</h1>
         <div class="splash-dev">المطور: محمد الكسادي</div>
-        <h2 style="font-family: 'Cairo'; font-size: 20px; margin-bottom: 40px; color: #888;">مركز التحكم بالاختبارات 2026</h2>
+        <h2 style="font-family: 'Cairo'; font-size: 20px; margin-bottom: 40px; color: #888;">مركز التحكم الشامل 2026</h2>
         <button class="enter-btn" onclick="enterApp()">بدء التشغيل</button>
     </div>
 
@@ -212,29 +217,55 @@
                 <i class="fas fa-eye"></i> المراقبة (معاينة كطالب)
             </a>
 
-            <h3 class="page-title">الأقسام الدراسية</h3>
+            <h3 class="page-title">الأقسام الرئيسية</h3>
             
+            <!-- تم تعديل جميع الأقسام لتفتح نافذة الخيارات -->
             <div class="sections-grid">
-                <div class="section-box science-box" onclick="openAdminSection('science')">
+                <div class="section-box science-box" onclick="openSectionOptions('science', 'القسم العلمي')">
                     <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=500&auto=format&fit=crop" alt="القسم العلمي">
                     <h3>القسم العلمي</h3>
                 </div>
-                <div class="section-box arts-box" onclick="openAdminSection('arts')">
+                <div class="section-box arts-box" onclick="openSectionOptions('arts', 'القسم الأدبي')">
                     <img src="https://images.unsplash.com/photo-1599839619722-39751411ea63?q=80&w=500&auto=format&fit=crop" alt="القسم الأدبي">
                     <h3>القسم الأدبي</h3>
                 </div>
             </div>
-
-            <div class="test-box" onclick="alert('قسم تلقائي، سيسحب الأسئلة من المواد المضافة')">
-                <div>
+            
+            <div class="sections-grid">
+                <div class="section-box" onclick="openSectionOptions('quiz', 'اختبر نفسك')" style="background:#b45309;">
+                    <h3 style="font-size:22px;">🧠</h3>
                     <h3>اختبر نفسك</h3>
-                    <p style="font-size: 13px; color: #ccc;">سحب تلقائي للاختبارات</p>
                 </div>
-                <i class="fas fa-brain"></i>
+                <div class="section-box" onclick="openSectionOptions('general', 'معلومات عامة')" style="background:#ca8a04;">
+                    <h3 style="font-size:22px;">❓</h3>
+                    <h3>معلومات عامة</h3>
+                </div>
+            </div>
+
+            <div class="sections-grid">
+                <div class="section-box" onclick="openSectionOptions('time', 'تنظيم الوقت')" style="background:#be123c;">
+                    <h3 style="font-size:22px;">⏳</h3>
+                    <h3>تنظيم الوقت</h3>
+                </div>
+                <div class="section-box" onclick="openSectionOptions('draw', 'الرسم الحر')" style="background:#db2777;">
+                    <h3 style="font-size:22px;">🎨</h3>
+                    <h3>الرسم الحر</h3>
+                </div>
+            </div>
+
+            <div class="sections-grid">
+                <div class="section-box" onclick="openSectionOptions('azkar', 'الأذكار')" style="background:#065f46;">
+                    <h3 style="font-size:22px;">📿</h3>
+                    <h3>الأذكار</h3>
+                </div>
+                <div class="section-box" onclick="openSectionOptions('prayer', 'مواقيت الصلاة')" style="background:#0e7490;">
+                    <h3 style="font-size:22px;">🕌</h3>
+                    <h3>مواقيت الصلاة</h3>
+                </div>
             </div>
         </div>
 
-        <!-- شاشة إدارة المواد -->
+        <!-- شاشة إدارة المواد (الموجودة مسبقاً) -->
         <div id="manage-screen" class="screen">
             <button onclick="showScreen('home-screen')" style="background:transparent; border:1px solid #555; color:#ccc; padding:8px 15px; border-radius:8px; margin-bottom:20px; cursor:pointer;"><i class="fas fa-arrow-right"></i> رجوع</button>
             <h2 id="manage-title" class="page-title">إدارة المواد</h2>
@@ -265,6 +296,16 @@
                 <input type="text" id="notif-text" class="notif-input" placeholder="اكتب نص الإشعار هنا...">
                 <button onclick="sendNotification()" style="background:var(--admin-red); color:white; border:none; padding:12px; border-radius:10px; width:100%; font-weight:bold; font-size:15px; cursor:pointer;">إرسال الآن</button>
             </div>
+
+            <!-- إضافة قسم النغمات -->
+            <div class="settings-section">
+                <h3><i class="fas fa-music"></i> إدارة نغمات التطبيق</h3>
+                <p style="font-size: 13px; color: #aaa; margin-bottom: 15px;">أضف نغمات جديدة لتظهر في تطبيق الطالب</p>
+                <input type="text" id="tone-name" class="notif-input" placeholder="اسم النغمة (مثال: نغمة المنبه)">
+                <input type="text" id="tone-url" class="notif-input" placeholder="رابط ملف الصوت (MP3)">
+                <button onclick="addTone()" style="background:#00c853; color:white; border:none; padding:12px; border-radius:10px; width:100%; font-weight:bold; font-size:15px; cursor:pointer;">إضافة نغمة</button>
+                <div id="tones-list" style="margin-top:15px;"></div>
+            </div>
         </div>
 
         <!-- شريط التنقل السفلي -->
@@ -278,7 +319,7 @@
         </div>
     </div>
 
-    <!-- نافذة إضافة / تعديل -->
+    <!-- نافذة إضافة / تعديل المواد -->
     <div class="modal-overlay" id="item-modal">
         <div class="modal-box">
             <h3 id="modal-title">إضافة مادة</h3>
@@ -291,6 +332,47 @@
             </div>
         </div>
     </div>
+
+    <!-- نافذة خيارات الأقسام (الجديدة) -->
+    <div class="modal-overlay" id="options-modal">
+        <div class="modal-box">
+            <h3 id="options-title">خيارات القسم</h3>
+            <div class="options-list" id="options-list-content">
+                <!-- سيتم توليد الخيارات هنا ديناميكياً -->
+            </div>
+            <div class="modal-actions" style="margin-top: 20px;">
+                <button class="btn-cancel" onclick="closeOptions()">إغلاق</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- استيراد مكتبات Firebase -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, push, set, onValue, remove, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyB1m4F4YvDRwCLjrBHAoZH8rdyH678Cwp0",
+            authDomain: "sadi-platform.firebaseapp.com",
+            databaseURL: "https://sadi-platform-default-rtdb.firebaseio.com",
+            projectId: "sadi-platform",
+            storageBucket: "sadi-platform.firebasestorage.app",
+            messagingSenderId: "97301590450",
+            appId: "1:97301590450:web:29e876db688cbcb3274ab",
+            measurementId: "G-C6GHJBV99P"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        
+        window.firebaseDB = db;
+        window.firebaseRef = ref;
+        window.firebasePush = push;
+        window.firebaseSet = set;
+        window.firebaseOnValue = onValue;
+        window.firebaseRemove = remove;
+        window.firebaseUpdate = update;
+    </script>
 
     <script>
         // --- 1. شاشة البداية ---
@@ -313,61 +395,92 @@
             navItem.classList.add('active');
         }
 
-        // --- 3. إدارة البيانات (تم وضع رابط صورة الأحياء الخاصة بك) ---
+        // --- 3. إدارة البيانات (مربوطة بـ Firebase) ---
         let currentSection = 'science';
-        let allData = JSON.parse(localStorage.getItem('adminData')) || {
-            science: [
-                // رابط الصورة المباشر الذي أرسلته
-                { id: 1, name: "الأحياء", img: "https://i.ibb.co/68032Z1/biology.jpg", pdf: "#" },
-                { id: 2, name: "الكيمياء", img: "https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?q=80&w=500&auto=format&fit=crop", pdf: "#" }
-            ], 
-            arts: [
-                { id: 3, name: "التاريخ", img: "https://images.unsplash.com/photo-1461360370896-922624d12aa1?q=80&w=500&auto=format&fit=crop", pdf: "#" }
-            ]
-        };
         let editItemId = null;
+        let currentItemsData = {};
 
         const defaultImg = "https://cdn-icons-png.flaticon.com/512/2232/2232688.png";
 
+        // دالة فتح خيارات القسم (تم تطويرها لتشمل جميع الأقسام)
+        function openSectionOptions(sectionId, sectionName) {
+            currentSection = sectionId;
+            document.getElementById('options-title').innerText = 'خيارات ' + sectionName;
+            
+            const list = document.getElementById('options-list-content');
+            
+            // إذا كان القسم علمي أو أدبي، نعرض خيارات المواد
+            if (sectionId === 'science' || sectionId === 'arts') {
+                list.innerHTML = `
+                    <button onclick="closeOptions(); openAdminSection('${sectionId}')"><i class="fas fa-list"></i> عرض وإدارة المواد</button>
+                    <button onclick="closeOptions(); alert('يمكنك إضافة مادة من صفحة الإدارة')"><i class="fas fa-plus"></i> إضافة مادة جديدة</button>
+                `;
+            } else {
+                // للأقسام الأخرى (رسم، تنظيم وقت، إلخ)، نعرض خيارات تحكم عامة
+                list.innerHTML = `
+                    <button onclick="alert('سيتم تفعيل هذا القسم للطلاب')"><i class="fas fa-check-circle"></i> تفعيل القسم للطلاب</button>
+                    <button onclick="alert('سيتم تعطيل هذا القسم للطلاب')"><i class="fas fa-ban"></i> تعطيل القسم للطلاب</button>
+                    <button onclick="alert('سيتم فتح إعدادات القسم')"><i class="fas fa-cog"></i> إعدادات القسم</button>
+                `;
+            }
+            
+            document.getElementById('options-modal').classList.add('active');
+        }
+
+        function closeOptions() {
+            document.getElementById('options-modal').classList.remove('active');
+        }
+
+        // دالة فتح إدارة المواد
         function openAdminSection(section) {
             currentSection = section;
             document.getElementById('manage-title').innerText = section === 'science' ? 'إدارة القسم العلمي' : 'إدارة القسم الأدبي';
             renderItems();
             showScreen('manage-screen');
+            closeOptions();
         }
 
-        // --- توليد المربعات ---
+        // --- توليد المربعات من السحابة ---
         function renderItems() {
             const list = document.getElementById('items-list');
-            list.innerHTML = '';
-            const items = allData[currentSection] || [];
+            list.innerHTML = '<p style="text-align:center; color:#666; grid-column: span 2;">جاري تحميل البيانات...</p>';
             
-            if(items.length === 0) {
-                list.innerHTML = '<p style="text-align:center; color:#666; margin-top:20px; grid-column: span 2;">لا توجد مواد مضافة.</p>';
-                return;
-            }
+            const itemsRef = window.firebaseRef(window.firebaseDB, 'materials/' + currentSection);
+            window.firebaseOnValue(itemsRef, (snapshot) => {
+                list.innerHTML = '';
+                const data = snapshot.val();
+                currentItemsData = data || {};
 
-            items.forEach(item => {
-                let imgSrc = item.img && item.img.trim() !== "" ? item.img : defaultImg;
+                if(!data) {
+                    list.innerHTML = '<p style="text-align:center; color:#666; margin-top:20px; grid-column: span 2;">لا توجد مواد مضافة.</p>';
+                    return;
+                }
 
-                const card = document.createElement('div');
-                card.className = 'book-card';
-                card.innerHTML = `
-                    <div class="book-actions">
-                        <button class="btn-edit" onclick="editItem(${item.id})" title="تعديل"><i class="fas fa-edit"></i></button>
-                        <button class="btn-delete" onclick="deleteItem(${item.id})" title="حذف"><i class="fas fa-trash"></i></button>
-                    </div>
-                    <img src="${imgSrc}" class="book-img" alt="${item.name}" onerror="this.src='${defaultImg}'">
-                    <div class="book-title">${item.name}</div>
-                `;
-                list.appendChild(card);
+                Object.keys(data).forEach(key => {
+                    const item = data[key];
+                    let imgSrc = item.img && item.img.trim() !== "" ? item.img : defaultImg;
+
+                    const card = document.createElement('div');
+                    card.className = 'book-card';
+                    card.innerHTML = `
+                        <div class="book-actions">
+                            <button class="btn-edit" onclick="editItem('${key}')" title="تعديل"><i class="fas fa-edit"></i></button>
+                            <button class="btn-delete" onclick="deleteItem('${key}')" title="حذف"><i class="fas fa-trash"></i></button>
+                        </div>
+                        <img src="${imgSrc}" class="book-img" alt="${item.name}" onerror="this.src='${defaultImg}'">
+                        <div class="book-title">${item.name}</div>
+                    `;
+                    list.appendChild(card);
+                });
             });
         }
 
         function deleteItem(id) {
-            if(confirm('هل أنت متأكد من حذف هذه المادة نهائياً؟')) {
-                allData[currentSection] = allData[currentSection].filter(item => item.id !== id);
-                saveData(); renderItems();
+            if(confirm('هل أنت متأكد من حذف هذه المادة نهائياً من السحابة؟')) {
+                const itemRef = window.firebaseRef(window.firebaseDB, 'materials/' + currentSection + '/' + id);
+                window.firebaseRemove(itemRef).then(() => {
+                    // سيتم تحديث القائمة تلقائياً
+                }).catch(err => alert('خطأ في الحذف: ' + err.message));
             }
         }
 
@@ -382,13 +495,13 @@
         }
 
         function editItem(id) {
-            const item = allData[currentSection].find(i => i.id === id);
+            const item = currentItemsData[id];
             if(!item) return;
             editItemId = id;
             document.getElementById('modal-title').innerText = 'تعديل المادة';
             document.getElementById('input-name').value = item.name;
-            document.getElementById('input-img').value = item.img;
-            document.getElementById('input-pdf').value = item.pdf;
+            document.getElementById('input-img').value = item.img || '';
+            document.getElementById('input-pdf').value = item.pdf || '';
             document.getElementById('item-modal').classList.add('active');
         }
 
@@ -401,18 +514,30 @@
 
             if(!name) { alert('يرجى إدخال اسم المادة على الأقل!'); return; }
 
-            if(editItemId) {
-                const index = allData[currentSection].findIndex(i => i.id === editItemId);
-                allData[currentSection][index] = { id: editItemId, name, img, pdf };
-            } else {
-                allData[currentSection].push({ id: Date.now(), name, img, pdf });
-            }
-            saveData(); closeModal(); renderItems();
+            const saveToFirebase = () => {
+                if(editItemId) {
+                    const itemRef = window.firebaseRef(window.firebaseDB, 'materials/' + currentSection + '/' + editItemId);
+                    window.firebaseUpdate(itemRef, { name, img, pdf }).then(() => {
+                        closeModal();
+                        alert('تم التعديل بنجاح!');
+                    }).catch(err => alert('خطأ في التعديل: ' + err.message));
+                } else {
+                    const itemsRef = window.firebaseRef(window.firebaseDB, 'materials/' + currentSection);
+                    const newItemRef = window.firebasePush(itemsRef);
+                    window.firebaseSet(newItemRef, { name, img, pdf }).then(() => {
+                        closeModal();
+                        // السؤال الجديد: هل تريد الرفع؟
+                        if(confirm('هل تريد رفع هذه المادة إلى تطبيق الطلاب الآن؟')) {
+                            alert('تم الرفع بنجاح! ستظهر المادة للطلاب فوراً.');
+                        }
+                    }).catch(err => alert('خطأ في الإضافة: ' + err.message));
+                }
+            };
+
+            saveToFirebase();
         }
 
-        function saveData() { localStorage.setItem('adminData', JSON.stringify(allData)); }
-
-        // --- 5. الإعدادات ---
+        // --- 5. الإعدادات والنغمات ---
         function changeTheme(color) {
             document.documentElement.style.setProperty('--admin-red', color);
             localStorage.setItem('themeColor', color);
@@ -429,16 +554,60 @@
             else { alert('اكتب نص الإشعار أولاً'); }
         }
 
-        // لمسح البيانات القديمة (لتجربة الكود الجديد من الصفر)
-        // localStorage.removeItem('adminData'); 
-        
-        renderItems();
+        // دوال النغمات الجديدة
+        function addTone() {
+            const name = document.getElementById('tone-name').value;
+            const url = document.getElementById('tone-url').value;
+            if(!name || !url) { alert('يرجى إدخال اسم النغمة ورابطها'); return; }
+            
+            const tonesRef = window.firebaseRef(window.firebaseDB, 'tones');
+            const newToneRef = window.firebasePush(tonesRef);
+            window.firebaseSet(newToneRef, { name, url }).then(() => {
+                alert('تمت إضافة النغمة بنجاح!');
+                document.getElementById('tone-name').value = '';
+                document.getElementById('tone-url').value = '';
+                loadTones(); // تحديث القائمة
+            });
+        }
+
+        function loadTones() {
+            const tonesRef = window.firebaseRef(window.firebaseDB, 'tones');
+            window.firebaseOnValue(tonesRef, (snapshot) => {
+                const list = document.getElementById('tones-list');
+                list.innerHTML = '';
+                const data = snapshot.val();
+                if(data) {
+                    Object.keys(data).forEach(key => {
+                        const tone = data[key];
+                        const div = document.createElement('div');
+                        div.style.cssText = "display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.05); padding:10px; border-radius:8px; margin-bottom:5px;";
+                        div.innerHTML = `
+                            <span>${tone.name}</span>
+                            <button onclick="deleteTone('${key}')" style="background:transparent; border:none; color:#ff2a2a; cursor:pointer;"><i class="fas fa-trash"></i></button>
+                        `;
+                        list.appendChild(div);
+                    });
+                }
+            });
+        }
+
+        function deleteTone(id) {
+            if(confirm('حذف هذه النغمة؟')) {
+                const toneRef = window.firebaseRef(window.firebaseDB, 'tones/' + id);
+                window.firebaseRemove(toneRef).then(() => loadTones());
+            }
+        }
+
+        // تحميل النغمات عند بدء التطبيق
+        loadTones();
     </script>
+
     <script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('sw.js');
-    });
-  }
-</script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('sw.js');
+        });
+      }
+    </script>
 </body>
+ </html>
